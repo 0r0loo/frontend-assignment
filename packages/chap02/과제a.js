@@ -1,9 +1,9 @@
 /**
  * 가상 DOM 생성
  *
- * @param {string} type - 생성할 DOM 노드의 타입 (예: 'div', 'span')
+ * @param {string} type - 생성할 DOM 노드의 타입
  * @param {Object | null} props - DOM 노드에 적용할 속성 객체
- * @param {...any} children - 자식 노드들 (문자열 또는 다른 가상 DOM 노드)
+ * @param {...any} children - 자식 노드
  * @returns 가상 DOM 객체 return
  */
 export function jsx(type, props, ...children) {
@@ -21,11 +21,14 @@ export function jsx(type, props, ...children) {
  * @returns 리얼 돔.
  */
 export function createElement(node) {
+  // TODO node 의 type 이 문자열이 아닌것도 대응
+
   // jsx를 dom으로 변환
   const element = document.createElement(node.type);
   for (const key in node.props) {
     if (key === 'class') {
-      element.setAttribute('class', node.props[key]);
+      // TODO: 스타일드 컴포넌트 같은 경우도 있어서 class 추가하는게 더 나을듯
+      element.classList.add(node.props[key]);
     }
     element.setAttribute(key, node.props[key]);
   }
@@ -46,10 +49,9 @@ function updateAttributes(target, newProps, oldProps) {
   //   만약 위 조건에 해당하지 않는다면 (속성값이 다르거나 구속성에 없음)
   //     target 에 해당 속성을 새 값으로 설정
   for (const key in newProps) {
-    if (newProps[key] === oldProps[key]) {
-      continue;
+    if (newProps[key] !== oldProps[key]) {
+      target.setAttribute(key, newProps[key]);
     }
-    target.setAttribute(key, newProps[key]);
   }
 
   // oldProps 을 반복하여 각 속성 확인
