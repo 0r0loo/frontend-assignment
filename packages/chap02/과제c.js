@@ -6,14 +6,19 @@ function MyReact() {
   let _rootComponent = null;
   let prevRootComponent = null;
   const _render = () => {
-    render(rootElement, _rootComponent);
+    resetHookContext();
+    const newElement = _rootComponent();
+
+    updateElement(rootElement, newElement, prevRootComponent);
+    prevRootComponent = newElement;
   };
   function render($root, rootComponent) {
     resetHookContext();
     rootElement = $root;
     _rootComponent = rootComponent;
     const newElement = rootComponent();
-    updateElement($root, newElement, prevRootComponent);
+
+    updateElement($root, newElement);
     prevRootComponent = newElement;
   }
 
