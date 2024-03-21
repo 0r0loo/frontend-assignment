@@ -1,25 +1,11 @@
-/**
- * 가상 DOM 생성
- *
- * @param {string} type - 생성할 DOM 노드의 타입
- * @param {Object | null} props - DOM 노드에 적용할 속성 객체
- * @param {...any} children - 자식 노드
- * @returns 가상 DOM 객체 return
- */
 export function jsx(type, props, ...children) {
   return {
     type,
     props: props || {},
-    children: children.flat()
+    children: [...children]
   };
 }
 
-/**
- * 가상 DOM => 실제 DOM 노드
- *
- * @param {any} node - 변환할 가상 DOM 노드
- * @returns 리얼 돔.
- */
 export function createElement(node) {
   // TODO node 의 type 이 문자열이 아닌것도 대응
 
